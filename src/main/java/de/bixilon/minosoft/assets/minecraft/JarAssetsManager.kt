@@ -57,7 +57,7 @@ class JarAssetsManager(
         if (FileAssetsUtil.verifyAsset(jarAssetsHash, jarAssetFile, profile.verify)) {
             val jarAssets = FileUtil.readFile(jarAssetFile).readArchive()
             for ((path, data) in jarAssets) {
-                this.jarAssets[path.removePrefix("assets/" + ProtocolDefinition.DEFAULT_NAMESPACE + "/")] = data
+                this.jarAssets[path.removePrefix("assets/" + ProtocolDefinition.DEFAULT_NAMESPACE + "/").lowercase()] = data
             }
         } else {
             var clientJar = FileUtil.safeReadFile(File(FileAssetsUtil.getPath(clientJarHash)), false)?.readZipArchive()
@@ -77,7 +77,7 @@ class JarAssetsManager(
                 if (!filename.startsWith("assets/")) {
                     continue
                 }
-                var cutFilename = filename.removePrefix("assets/")
+                var cutFilename = filename.removePrefix("assets/").lowercase()
                 val splitFilename = cutFilename.split("/", limit = 2)
                 if (splitFilename[0] != ProtocolDefinition.DEFAULT_NAMESPACE) {
                     continue
@@ -120,14 +120,14 @@ class JarAssetsManager(
 
     override fun get(path: ResourceLocation): InputStream {
         check(path.namespace == ProtocolDefinition.DEFAULT_NAMESPACE) { "Jar Assets manager does not provide non-minecraft assets!" }
-        return ByteArrayInputStream(jarAssets[path.path] ?: throw FileNotFoundException("Can not find asset: $path"))
+        return ByteArrayInputStream(jarAssets[path.path.lowercase()] ?: throw FileNotFoundException("Can not find asset: $path"))
     }
 
     override fun getOrNull(path: ResourceLocation): InputStream? {
         if (path.namespace != ProtocolDefinition.DEFAULT_NAMESPACE) {
             return null
         }
-        return ByteArrayInputStream(jarAssets[path.path] ?: return null)
+        return ByteArrayInputStream(jarAssets[path.path.lowercase()] ?: return null)
     }
 
     override fun unload() {

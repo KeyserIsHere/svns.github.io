@@ -37,7 +37,7 @@ class RemotePlayerEntity(
 ) : PlayerEntity(connection, entityType, data, position, rotation, name, properties, tabListItem) {
 
     companion object : EntityFactory<PlayerEntity> {
-        override val RESOURCE_LOCATION: ResourceLocation = ResourceLocation("minecraft:player")
+        override val RESOURCE_LOCATION: ResourceLocation get() = PlayerEntity.RESOURCE_LOCATION
 
         override fun build(connection: PlayConnection, entityType: EntityType, data: EntityData, position: Vec3d, rotation: EntityRotation): RemotePlayerEntity? {
             throw IllegalAccessError("Can not build player entity!")

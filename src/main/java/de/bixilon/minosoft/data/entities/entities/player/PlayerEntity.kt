@@ -27,6 +27,8 @@ import de.bixilon.minosoft.data.entities.entities.SynchronizedEntityData
 import de.bixilon.minosoft.data.player.Arms
 import de.bixilon.minosoft.data.player.properties.PlayerProperties
 import de.bixilon.minosoft.data.player.tab.TabListItem
+import de.bixilon.minosoft.data.registries.CompanionResourceLocation
+import de.bixilon.minosoft.data.registries.ResourceLocation
 import de.bixilon.minosoft.data.registries.entities.EntityType
 import de.bixilon.minosoft.data.registries.items.armor.DyeableArmorItem
 import de.bixilon.minosoft.data.text.ChatColors
@@ -117,7 +119,8 @@ abstract class PlayerEntity(
             return ChatColors.RED
         }
 
-    companion object {
+    companion object : CompanionResourceLocation {
+        override val RESOURCE_LOCATION: ResourceLocation = ResourceLocation("minecraft:player")
         private val DIMENSIONS: Map<Poses, Vec2> = mapOf(
             Poses.STANDING to Vec2(0.6f, 1.8f),
             Poses.SLEEPING to Vec2(0.2f, 0.2f),
